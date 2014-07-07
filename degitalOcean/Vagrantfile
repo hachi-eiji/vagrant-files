@@ -51,5 +51,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       s.inline = $script
       s.args = [ENV['PRIVATE_IP'], ENV['MY_GIP']]
     end
+    config.vm.provision "shell", :path => '../script/install_mysql.sh'
   end
 end
