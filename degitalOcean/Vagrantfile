@@ -1,0 +1,35 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Dotenv.load
+
+ENV['VAGRANT_DEFAULT_PROVIDER'] = "digital_ocean"
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.provider :digital_ocean do |provider, override|
+    override.vm.hostname          = ENV['HOSTNAME']
+    override.vm.box               = "digital_ocean"
+    override.vm.box_url           = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
+    override.ssh.username         = ENV['SSH_USERNAME']
+    override.ssh.private_key_path = ENV['SSH_KEY']
+
+    provider.client_id            = ENV['CLIENT_ID']
+    provider.api_key              = ENV['API_KEY']
+    provider.ssh_key_name         = ENV['SSH_KEY_NAME']
+    provider.region               = ENV['REGION']
+    provider.image                = ENV['IMAGE']
+    provider.size                 = ENV['MEMORY']
+    provider.private_networking   = true
+    provider.ca_path              = "/usr/local/share/ca-bundle.crt"
+    provider.setup                = true
+
+    # disable synced_folder: rsync is not installed on DigitalOcean's guest machine
+    override.vm.synced_folder "./", "/vagrant", disabled: true
+
+    # provision
+  end
+
+end
