@@ -7,6 +7,23 @@ ENV['VAGRANT_DEFAULT_PROVIDER'] = "digital_ocean"
 
 VAGRANTFILE_API_VERSION = "2"
 
+$script = <<SCRIPT
+cat<< EOF > /etc/sysconfig/iptables
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+-A INPUT -p icmp -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp -s $1 -m multiport --dports 0:65535 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp -s $2 -m multiport --dports 0:65535 -j ACCEPT
+COMMIT
+EOF
+service iptables restart
+SCRIPT
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provider :digital_ocean do |provider, override|
@@ -30,6 +47,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     override.vm.synced_folder "./", "/vagrant", disabled: true
 
     # provision
+    config.vm.provision "shell" do |s|
+      s.inline = $script
+      s.args = [ENV['PRIVATE_IP'], ENV['MY_GIP']]
+    end
   end
-
 end
