@@ -11,6 +11,6 @@ vagrant plugin install dotenv
 
 ```
 vagrant plugin install vagrant-digitalocean 
-cd DigitalOcean
+cd digitalOcean
 vagrant up --provider=digital_ocean
 ```
