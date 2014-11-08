@@ -1,16 +1,15 @@
 SSL_CERT_FILE=/usr/local/share/ca-bundle.crt
 
-HOSTNAME='<HOSTNAME>'
-REGION='Singapore 1'
-IMAGE='CentOS 6.5 x64'
+TOKEN='<YOUR_TOKEN>'
+
+HOSTNAME='<YOUR_HOSTNAME>'
+REGION='sgp1'
+IMAGE='6.5 x64'
 MEMORY='1GB'
 
 PRIVATE_IP='10.0.0.0/8'
-MY_GIP='<YOUR_GIP>'
+MY_GIP='<YOUR_GLOBAL_IP>'
 
 SSH_KEY_NAME='<SSH_KEY_NAME>'
 SSH_USERNAME='<SSH_USERNAME>'
 SSH_KEY=${HOME}/.ssh/id_rsa
-# https://cloud.digitalocean.com/generate_api_key
-CLIENT_ID='<YOUR_CLIENT_ID>'
-API_KEY='<YOUR_API_KEY>'
